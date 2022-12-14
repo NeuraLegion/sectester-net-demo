@@ -1,0 +1,34 @@
+<Project>
+  <Import Project="..\Directory.Build.props"/>
+
+  <PropertyGroup>
+    <Authors>artem.derevnjuk@brightsec.com</Authors>
+    <Company>Bright Security</Company>
+    <Product>SecTester</Product>
+    <Description>This is a demo project for the SecTester JS SDK framework, with some installation and usage examples.</Description>
+
+    <PackageTags>security;testing;e2e;test,.net;appsec;pentesting;qa;brightsec;scan;dast;demo</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryRoot>$(MSBuildThisFileDirectory)</RepositoryRoot>
+    <RepositoryUrl>https://github.com/NeuraLegion/sectester-net-demo</RepositoryUrl>
+
+    <PackageProjectUrl>https://brightsec.com/</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+    <!-- Prop required by Microsoft.SourceLink.GitHub -->
+    <!-- Publish the repository URL in the built .nupkg (in the NuSpec <Repository> element) -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <!-- Embed source files that are not tracked by the source control manager in the PDB -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <!-- Embed PDB inside the assembly -->
+    <DebugType>embedded</DebugType>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>Recommended</AnalysisMode>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,59 @@
+{
+  "plugins": [
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "parserOpts": {
+          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
+        }
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "angular",
+        "parserOpts": {
+          "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
+        },
+        "writerOpts": {
+          "commitsSort": ["subject", "scope"]
+        }
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "sed -i -e 's!<Version>.*</Version>!<Version>${nextRelease.version}</Version>!' Directory.Build.props"
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "dotnet restore --use-lock-file -f"
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": ["**/Directory.Build.props", "src/**/*.csproj", "**/packages.lock.json"],
+        "message": "chore(release): cut the ${nextRelease.version} release [skip ci]"
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "labels": false,
+        "releasedLabels": false,
+        "failTitle": false,
+        "failComment": false,
+        "successComment": false
+      }
+    ]
+  ],
+  "branches": [
+    {
+      "name": "master"
+    }
+  ],
+  "ci": true
+}

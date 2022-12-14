@@ -1,0 +1,43 @@
+name: CI / Automated testing
+
+on:
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set Global Environment Variables
+        shell: bash
+        run: |
+          echo "DOTNET_CLI_TELEMETRY_OPTOUT=1" >> $GITHUB_ENV
+          echo "DOTNET_NOLOGO=1" >> $GITHUB_ENV
+
+      - name: Dependency Caching
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore .NET Dependencies
+        run: dotnet restore --nologo --locked-mode
+
+      - name: Build
+        run: dotnet build -c Release --no-restore --nologo /p:CopyLocalLockFileAssemblies=true
+
+      - name: dotnet format
+        run: dotnet format --no-restore
+
+      - name: dotnet test
+        run: dotnet test -c Release --no-build --nologo
+
+
