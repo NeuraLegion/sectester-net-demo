@@ -12,7 +12,7 @@ public class Users
     _userContext = userContext;
   }
 
-  public async Task<User> Create(CreateUserDto payload)
+  public virtual async Task<User> Create(CreateUserDto payload)
   {
     var user = new User
     {
@@ -26,9 +26,9 @@ public class Users
     return user;
   }
 
-  public Task<User?> FindOne(int id) => _userContext.Users.FindAsync(id).AsTask();
+  public virtual Task<User?> FindOne(int id) => _userContext.Users.FindAsync(id).AsTask();
 
-  public async Task Remove(int id)
+  public virtual async Task Remove(int id)
   {
     var user = _userContext.Users.SingleOrDefault(x => x.Id == id);
 
@@ -53,7 +53,7 @@ public class Users
   ///   return _userContext.Users.Where(u => u.Name.Contains(name)).ToListAsync();
   /// }
   /// </summary>
-  public Task<List<User>> FindByName(string name)
+  public virtual Task<List<User>> FindByName(string name)
   {
     var query = $@"select * from ""Users"" where ""Name"" ilike '{name}%'";
 
