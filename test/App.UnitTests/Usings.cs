@@ -1,0 +1,10 @@
+global using App.Controllers;
+global using App.Infrastructure;
+global using App.Models;
+global using EntityFrameworkCore.Testing.NSubstitute;
+global using EntityFrameworkCore.Testing.NSubstitute.Extensions;
+global using FluentAssertions;
+global using Microsoft.EntityFrameworkCore;
+global using NSubstitute;
+global using NSubstitute.ClearExtensions;
+global using Xunit;

@@ -8,9 +8,9 @@ namespace App.Controllers;
 [Route("[controller]")]
 public class UsersController : ControllerBase
 {
-  private readonly Users _users;
+  private readonly IUsers _users;
 
-  public UsersController(Users users)
+  public UsersController(IUsers users)
   {
     _users = users;
   }
