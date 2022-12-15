@@ -60,6 +60,58 @@ Trying out Bright’s SecTester is _**free**_ 💸, so let’s get started!
 
 ### Explore the demo application
 
+Navigate to your local version of this project. Then, in your command line, install the dependencies:
+
+```bash
+$ dotnet restore --use-lock-file
+```
+
+The whole list of required variables to start the demo application is described in `.env.example` file. The template for this .env file is available in the root folder.
+
+After that, you can easily create a `.env` file from the template by issuing the following command:
+
+```bash
+$ cp .env.example .env
+```
+
+Once this template is done, copying over (should be instantaneous), navigate to your `.env` file, and paste your Bright API key as the value of the `BRIGHT_TOKEN` variable.
+
+```text
+BRIGHT_TOKEN = <your_API_key_here>
+```
+
+Then you have to build and run services with Docker. Start Docker, and issue the command as follows:
+
+```bash
+$ docker compose up -d
+```
+
+To initialize DB schema, you should execute a migration, as shown here:
+
+```bash
+$ dotnet ef database update --project src/App
+```
+
+Finally, perform this command in terminal to run the application:
+
+```bash
+$ dotnet run --project src/App
+```
+
+While having the application running, open a browser and type `http://localhost:3000/swagger`, and hit enter.
+You should see the Swagger UI page for that application that allows you to test the RESTFul CRUD API, like in the following screenshot:
+
+![Swagger UI](https://user-images.githubusercontent.com/38690835/207823150-de8cd161-a748-4f79-9ae3-951648dee8f5.png)
+
+To explore the Swagger UI:
+
+- Click on the `POST /users` endpoint
+- Click on the "Try it out" button
+- Click on the blue "Execute" button
+- Then you should see a view similar to the following, where you can see the JSON returned from the API:
+
+![Swagger UI](https://user-images.githubusercontent.com/38690835/207823133-670ec680-6875-4c1d-95d9-a67e72dac299.png)
+
 _TBU_
 
 ### A full configuration example
