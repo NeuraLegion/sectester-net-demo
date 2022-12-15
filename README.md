@@ -52,9 +52,9 @@ Trying out Bright’s SecTester is _**free**_ 💸, so let’s get started!
 2.  Optional: Skip the quickstart wizard and go directly to [**User API key creation**](https://app.neuralegion.com/profile)
 3.  Create a Bright API key ([**check out our doc on how to create a user key**](https://docs.brightsec.com/docs/manage-your-personal-account#manage-your-personal-api-keys-authentication-tokens))
 4.  Save the Bright API key
-  1.  We recommend using your Github repository secrets feature to store the key, accessible via the `Settings > Security > Secrets > Actions` configuration. We use the ENV variable called `BRIGHT_TOKEN` in our examples
-  2.  If you don’t use that option, make sure you save the key in a secure location. You will need to access it later on in the project but will not be able to view it again.
-  3.  More info on [**how to use ENV vars in Github actions**](https://docs.github.com/en/actions/learn-github-actions/environment-variables)
+5.  We recommend using your Github repository secrets feature to store the key, accessible via the `Settings > Security > Secrets > Actions` configuration. We use the ENV variable called `BRIGHT_TOKEN` in our examples
+6.  If you don’t use that option, make sure you save the key in a secure location. You will need to access it later on in the project but will not be able to view it again.
+7.  More info on [**how to use ENV vars in Github actions**](https://docs.github.com/en/actions/learn-github-actions/environment-variables)
 
 > ⚠️ Make sure your API key is saved in a location where you can retrieve it later! You will need it in these next steps!
 
@@ -101,7 +101,7 @@ $ dotnet run --project src/App
 While having the application running, open a browser and type `http://localhost:3000/swagger`, and hit enter.
 You should see the Swagger UI page for that application that allows you to test the RESTFul CRUD API, like in the following screenshot:
 
-![Swagger UI](https://user-images.githubusercontent.com/38690835/207823150-de8cd161-a748-4f79-9ae3-951648dee8f5.png)
+![Swagger UI](https://user-images.githubusercontent.com/38690835/207978865-12fe2292-b7e5-461c-a3b9-9a7a03bc7f12.png)
 
 To explore the Swagger UI:
 
@@ -110,13 +110,390 @@ To explore the Swagger UI:
 - Click on the blue "Execute" button
 - Then you should see a view similar to the following, where you can see the JSON returned from the API:
 
-![Swagger UI](https://user-images.githubusercontent.com/38690835/207823133-670ec680-6875-4c1d-95d9-a67e72dac299.png)
+![Swagger UI](https://user-images.githubusercontent.com/38690835/207978869-4581e1e4-e0d7-4b08-bf23-a49b58d50688.png)
 
-_TBU_
+Then you can start tests with SecTester against these endpoints as follows (make sure you use a new terminal window, as the original is still running the API for us!)
+
+```bash
+$ npm run test:sec
+```
+
+> You will find tests written with SecTester in the `./test/sec` folder.
+
+This can take a few minutes, and then you should see the result, like in the following screenshot:
+
+```text
+[xUnit.net 00:06:47.46]     App.SecurityTests.AppTests.Get_Users_ShouldNotHaveSqli [FAIL]
+  Failed App.SecurityTests.AppTests.Get_Users_ShouldNotHaveSqli [3 m 35 s]
+  Error Message:
+   SecTester.Runner.IssueFound : Target is vulnerable
+
+Issue in Bright UI:   https://development.playground.neuralegion.com/scans/kPzCzYEEVqtqqi8K13x9zY/issues/5YwVwZpcKQNgPpX2YP6XEb
+Name:                 SQL Injection
+Severity:             High
+Remediation:
+If available, use structured mechanisms that automatically enforce the separation between data and code. These mechanisms may be able to provide the relevant quoting, encoding, and validation automatically, instead of relying on the developer to provide this capability at every point where output is generated. Process SQL queries using prepared statements, parameterized queries, or stored procedures. These features should accept parameters or variables and support strong typing. Do not dynamically construct and execute query strings within these features using 'exec' or similar functionality, since this may re-introduce the possibility of SQL injection
+Details:
+A SQL Injection attack consists of inserting or injecting a SQL query via the input data received by the application from the client.
+A successful SQL injection exploit can read sensitive data from the database, modify database data (Insert/Update/Delete), execute administration operations on the database (such as shutdown the DBMS), recover the content of a given file present on the DBMS file system and in some cases issue commands to the operating system.
+SQL injection attacks are a type of injection attack, in which SQL commands are injected into data-plane input in order to affect the execution of predefined SQL commands.
+Attack Vector Information:
+Attacked Parameter:
+Attacked Parameter Type: MultiParse::DataType::String
+Attacked Parameter Location: Query
+Triggered Using Token: '
+Parameter Encoding: [:none]
+Extra Details:
+● Injection Points
+        Parameter: #1* (URI)
+            Type: boolean-based blind
+            Title: AND boolean-based blind - WHERE or HAVING clause (subquery - comment)
+            Payload: http://127.0.0.1:56581/Users?name=%' AND 4552=(SELECT (CASE WHEN (4552=4552) THEN 4552 ELSE (SELECT 7744 UNION SELECT 3614) END))-- LRbn
+
+            Type: error-based
+            Title: PostgreSQL AND error-based - WHERE or HAVING clause
+            Payload: http://127.0.0.1:56581/Users?name=%' AND 3650=CAST((CHR(113)||CHR(122)||CHR(118)||CHR(107)||CHR(113))||(SELECT (CASE WHEN (3650=3650) THEN 1 ELSE 0 END))::text||(CHR(113)||CHR(98)||CHR(122)||CHR(106)||CHR(113)) AS NUMERIC) AND 'Mlpq%'='Mlpq
+
+            Type: stacked queries
+            Title: PostgreSQL > 8.1 stacked queries (comment)
+            Payload: http://127.0.0.1:56581/Users?name=%';SELECT PG_SLEEP(5)--
+
+            Type: time-based blind
+            Title: PostgreSQL > 8.1 AND time-based blind
+            Payload: http://127.0.0.1:56581/Users?name=%' AND 1123=(SELECT 1123 FROM PG_SLEEP(5)) AND 'aZdM%'='aZdM
+        Database Banner: 'postgresql 14.6 on x86_64-pc-linux-musl, compiled by gcc (alpine 11.2.1_git20220219) 11.2.1 20220219, 64-bit'
+
+References:
+● https://cwe.mitre.org/data/definitions/89.html
+● https://www.owasp.org/index.php/SQL_Injection
+● https://www.neuralegion.com/blog/sql-injection-sqli/
+● https://kb.neuralegion.com/#/guide/vulnerabilities/3-sql-injection.md
+  Stack Trace:
+     at SecTester.Runner.SecScan.Assert(IScan scan) in /home/runner/work/sectester-net/sectester-net/src/SecTester.Runner/SecScan.cs:line 64
+   at SecTester.Runner.SecScan.Run(Target target, CancellationToken cancellationToken) in /home/runner/work/sectester-net/sectester-net/src/SecTester.Runner/SecScan.cs:line 36
+   at SecTester.Runner.SecScan.Run(Target target, CancellationToken cancellationToken) in /home/runner/work/sectester-net/sectester-net/src/SecTester.Runner/SecScan.cs:line 40
+   at SecTester.Runner.SecScan.Run(Target target, CancellationToken cancellationToken) in /home/runner/work/sectester-net/sectester-net/src/SecTester.Runner/SecScan.cs:line 40
+   at App.SecurityTests.AppTests.Get_Users_ShouldNotHaveSqli() in /Users/Projects/sectester-net-demo/test/App.SecurityTests/AppTests.cs:line 65
+--- End of stack trace from previous location ---
+
+Failed!  - Failed:     1, Passed:     1, Skipped:     0, Total:     2, Duration: 4 m 5 s - /Users/artemderevnjuk/Projects/sectester-net-demo/test/App.SecurityTests/bin/Debug/net6.0/App.SecurityTests.dll (net6.0)
+```
 
 ### A full configuration example
 
-_TBU_
+Now you will look under the hood to see how this all works. In the following example, we will test the app we just set up for any instances of SQL injection. [xUnit](https://xunit.net/) is provided as the testing framework, that provides assert functions and excellent extensibility of test classes and test methods.
+
+To start the webserver within the same process with tests, not in a remote environment or container, we use ASP.NET [testing utilities](https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-6.0). You don’t have to use ASP.NET, but it is what we chose for this project. The code is as follows:
+
+[`test/App.SecurityTests/AppTests.cs`](./test/App.SecurityTests/AppTests.cs)
+
+```csharp
+public class AppFixture : WebApplicationFactory<Program>
+{
+  private IHost _host;
+
+  protected override void ConfigureWebHost(IWebHostBuilder builder) =>
+    builder.ConfigureAppConfiguration(cb => cb.AddJsonFile("appsettings.json", true)
+        .AddEnvironmentVariables())
+      .ConfigureLogging(loggingBuilder => loggingBuilder.ClearProviders())
+      .UseSolutionRelativeContentRoot("")
+      .UseKestrel()
+      .UseUrls("http://127.0.0.1:0");
+
+  protected override IHost CreateHost(IHostBuilder builder)
+  {
+    var testHost = builder.Build();
+
+    builder.ConfigureWebHost(webHostBuilder => webHostBuilder.UseKestrel());
+
+    // See https://github.com/dotnet/aspnetcore/issues/33846.
+    _host = builder.Build();
+
+    _host.Start();
+
+    var server = _host.Services.GetRequiredService<IServer>();
+    var addresses = server.Features.Get<IServerAddressesFeature>();
+
+    ClientOptions.BaseAddress = addresses!.Addresses
+      .Select(x => new Uri(x))
+      .Last();
+
+    // See https://github.com/dotnet/aspnetcore/pull/34702.
+    testHost.Start();
+    return testHost;
+  }
+}
+```
+
+The [`SecTester.Runner`](https://github.com/NeuraLegion/sectester-net/tree/master/src/SecTester.Runner) project provides a set of utilities that allows scanning the demo application for vulnerabilities. Let's expand the previous example using the built-in `SecRunner` class:
+
+```csharp
+public class AppTests : IClassFixture<AppFixture>, IAsyncLifetime
+{
+  private readonly Configuration _config = new("app.brightsec.com");
+  private readonly AppFixture _fixture;
+  private readonly SecRunner _runner;
+
+  public AppTests(AppFixture fixture)
+  {
+    _fixture = fixture;
+    _runner = SecRunner.Create(_config);
+  }
+
+  public async Task InitializeAsync() => await _runner.Init();
+
+  public async Task DisposeAsync()
+  {
+    await _runner.DisposeAsync();
+    GC.SuppressFinalize(this);
+  }
+}
+```
+
+To set up a runner, create a `SecRunner` instance on the top of the file, passing a configuration as follows:
+
+```csharp
+using SecTester.Runner;
+
+using var runner = SecRunner.Create(_config);
+```
+
+After that, you have to initialize a `SecRunner` instance:
+
+```csharp
+await runner.Init();
+```
+
+The runner is now ready to perform your tests. To start scanning your endpoint, first, you have to create a `SecScan` instance. We do this with `runner.CreateScan` as shown in the example below.
+
+Now, you will write and run your first unit test!
+
+Let's verify the `GET /Users` endpoint for SQLi:
+
+```csharp
+public class AppTests : IClassFixture<AppFixture>, IAsyncLifetime
+{
+  // ...
+  [Fact]
+  public async Task Get_Users_ShouldNotHaveSqli()
+  {
+    var target = new Target($"{_fixture.Url}/Users")
+      .WithQuery(new Dictionary<string, string> { { "name", "Test" } });
+
+    var builder = new ScanSettingsBuilder()
+      .WithTests(new List<TestType> { TestType.Sqli });
+
+    await _runner
+      .CreateScan(builder)
+      .Run(target);
+  }
+}
+```
+
+This will raise an exception when the test fails, with remediation information and a deeper explanation of SQLi, right in your command line!
+
+Let's look at another test for the `POST /users` endpoint, this time for XSS.
+
+```csharp
+public class AppTests : IClassFixture<AppFixture>, IAsyncLifetime
+{
+  // ...
+  [Fact]
+  public async Task Post_Users_ShouldNotHaveXss()
+  {
+    var content = JsonContent.Create(new { Name = "Test" },
+      options: new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+
+    var target = new Target($"{_fixture.Url}/Users")
+      .WithMethod(HttpMethod.Post)
+      .WithBody(content);
+
+    var builder = new ScanSettingsBuilder()
+      .WithTests(new List<TestType> { TestType.Xss });
+
+    await _runner
+      .CreateScan(builder)
+      .Run(target);
+  }
+}
+```
+
+As you can see, writing a new test for XSS follows the same pattern as SQLi.
+
+Finally, to run a scan against the endpoint, you have to obtain a port to which the server listens. For that, we should adjust the example above just a bit:
+
+```csharp
+public class AppFixture : WebApplicationFactory<Program>
+{
+  private readonly Lazy<Uri> _urlInitializer;
+
+  // ...
+
+  public AppFixture()
+  {
+    _urlInitializer = new Lazy<Uri>(GetUrl);
+  }
+
+  public Uri Url => _urlInitializer.Value;
+
+  // ...
+
+  private Uri GetUrl()
+  {
+    EnsureServer();
+    return ClientOptions.BaseAddress;
+  }
+
+  private void EnsureServer()
+  {
+    if (_host is null)
+    {
+      // This forces WebApplicationFactory to bootstrap the server
+      using var _ = CreateDefaultClient();
+    }
+  }
+}
+```
+
+Now, you can use the `Url` to set up a target:
+
+```csharp
+var target = new Target($"{_fixture.Url}/Users")
+  .WithMethod(HttpMethod.Post)
+  .WithBody(content);
+```
+
+By default, each found issue will cause the scan to stop. To control this behavior you can set a severity threshold using the `Threshold` method. Since SQLi (SQL injection) is considered to be high severity issue, we can pass `Severity.High` for stricter checks:
+
+```ts
+scan.Threshold(Severity.High);
+```
+
+To avoid long-running test, you can specify a timeout, to say how long to wait before aborting it:
+
+```ts
+scan.Timeout(TimeSpan.FromMinutes(5));
+```
+
+To clarify an attack surface and speed up the test, we suggest making clear where to discover parameters according to the source code.
+
+[`src/App/Controllers/UsersController.cs`](./src/App/Controllers/UsersController.cs)
+
+```csharp
+[ApiController]
+[Route("[controller]")]
+public class UsersController : ControllerBase
+{
+  // ...
+
+  [HttpGet]
+  [ProducesResponseType(typeof(IEnumerable<User>), (int)HttpStatusCode.OK)]
+  public Task<List<User>> FindByName([FromQuery] string name) => _users.FindByName(name);
+}
+```
+
+For the example above, it should look like this:
+
+```csharp
+var builder = new ScanSettingsBuilder()
+  .WithAttackParamLocations(new List<AttackParamLocation>
+  {
+    AttackParamLocation.Query
+  })
+  .WithTests(new List<TestType> { TestType.Sqli });
+```
+
+Finally, the test should look like this:
+
+```csharp
+var target = new Target($"{_fixture.Url}/Users")
+  .WithMethod(HttpMethod.Get)
+  .WithQuery(new Dictionary<string, string> { { "name", "Test" } });
+
+var builder = new ScanSettingsBuilder()
+  .WithAttackParamLocations(new List<AttackParamLocation>
+  {
+    AttackParamLocation.Query
+  })
+  .WithTests(new List<TestType> { TestType.Sqli });
+
+await _runner
+  .CreateScan(builder)
+  .Threshold(Severity.High)
+  .Run(target);
+```
+
+Here is a completed `test/App.SecurityTests/AppTests.cs` file with all the tests and configuration set up.
+
+```csharp
+namespace App.SecurityTests;
+
+public class AppTests : IClassFixture<AppFixture>, IAsyncLifetime
+{
+  private readonly Configuration _config = new("app.brightsec.com");
+  private readonly AppFixture _fixture;
+  private readonly SecRunner _runner;
+
+  public AppTests(AppFixture fixture)
+  {
+    _fixture = fixture;
+    _runner = SecRunner.Create(_config);
+  }
+
+  public async Task InitializeAsync() => await _runner.Init();
+
+  public async Task DisposeAsync()
+  {
+    await _runner.DisposeAsync();
+    GC.SuppressFinalize(this);
+  }
+
+  [Fact]
+  public async Task Post_Users_ShouldNotHaveXss()
+  {
+    var content = JsonContent.Create(new { Name = "Test" },
+      options: new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+
+    var target = new Target($"{_fixture.Url}/Users")
+      .WithMethod(HttpMethod.Post)
+      .WithBody(content);
+
+    var builder = new ScanSettingsBuilder()
+      .WithAttackParamLocations(new List<AttackParamLocation>
+      {
+        AttackParamLocation.Body
+      })
+      .WithTests(new List<TestType> { TestType.Xss });
+
+    await _runner
+      .CreateScan(builder)
+      .Threshold(Severity.Medium)
+      .Run(target);
+  }
+
+  [Fact]
+  public async Task Get_Users_ShouldNotHaveSqli()
+  {
+    var target = new Target($"{_fixture.Url}/Users")
+      .WithMethod(HttpMethod.Get)
+      .WithQuery(new Dictionary<string, string> { { "name", "Test" } });
+
+    var builder = new ScanSettingsBuilder()
+      .WithAttackParamLocations(new List<AttackParamLocation>
+      {
+        AttackParamLocation.Query
+      })
+      .WithTests(new List<TestType> { TestType.Sqli });
+
+    await _runner
+      .CreateScan(builder)
+      .Threshold(Severity.High)
+      .Run(target);
+  }
+}
+```
+
+Full documentation can be found in the [`SecTester.Runner`](https://github.com/NeuraLegion/sectester-net/tree/master/src/SecTester.Runner) README.
 
 ### Recommended tests
 
@@ -164,7 +541,20 @@ _TBU_
 
 ### Example of a CI configuration
 
-_TBU_
+You can integrate this library into any CI you use, for that you will need to add the `BRIGHT_TOKEN` ENV vars to your CI. Then add the following to your `github actions` configuration:
+
+```yaml
+steps:
+  - name: Run sec tests
+    run: dotnet test -c Release --no-build --nologo --filter "FullyQualifiedName~SecurityTests"
+    env:
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      BRIGHT_TOKEN: ${{ secrets.BRIGHT_TOKEN }}
+      BRIGHT_HOSTNAME: app.brightsec.com
+```
+
+For a full list of CI configuration examples, check out the docs below.
 
 ## Documentation & Help
 

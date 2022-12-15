@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen(options =>
   options.SwaggerDoc("v1", new OpenApiInfo
   {
     Version = "1.0",
-    Title = "SecTester JS Demo",
+    Title = "SecTester NET Demo",
     Description = "This is a demo project for the SecTester NET SDK framework, with some installation and usage examples."
   });
 });
@@ -34,7 +34,7 @@ if (app.Environment.IsDevelopment())
   app.UseSwagger();
   app.UseSwaggerUI(options =>
   {
-    options.DocumentTitle = "SecTester JS Demo";
+    options.DocumentTitle = "SecTester NET Demo";
   });
 }
 
