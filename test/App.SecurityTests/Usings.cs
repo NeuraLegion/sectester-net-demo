@@ -1,6 +1,7 @@
 global using System.Net.Http.Json;
 global using System.Text.Json;
 global using App.Infrastructure;
+global using DotNetEnv;
 global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.AspNetCore.Hosting.Server;
 global using Microsoft.AspNetCore.Hosting.Server.Features;

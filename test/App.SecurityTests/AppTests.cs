@@ -2,15 +2,16 @@ namespace App.SecurityTests;
 
 public class AppTests : IClassFixture<AppFixture>, IAsyncLifetime
 {
+  private static readonly IEnumerable<KeyValuePair<string, string>> _ = Env.NoClobber().TraversePath().Load();
   private static readonly string Hostname = Environment.GetEnvironmentVariable("BRIGHT_HOSTNAME")!;
   private static readonly string Token = Environment.GetEnvironmentVariable("BRIGHT_TOKEN")!;
-  private readonly AppFixture _appFixture;
-  private readonly Configuration _config = new(Hostname, new Credentials(Token), logLevel: LogLevel.Trace);
+  private readonly Configuration _config = new(Hostname, new Credentials(Token));
+  private readonly AppFixture _fixture;
   private readonly SecRunner _runner;
 
-  public AppTests(AppFixture appFixture)
+  public AppTests(AppFixture fixture)
   {
-    _appFixture = appFixture;
+    _fixture = fixture;
     _runner = SecRunner.Create(_config);
   }
 
@@ -22,12 +23,13 @@ public class AppTests : IClassFixture<AppFixture>, IAsyncLifetime
     GC.SuppressFinalize(this);
   }
 
+  [Fact]
   public async Task Post_Users_ShouldNotHaveXss()
   {
     var content = JsonContent.Create(new { Name = "Test" },
       options: new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
 
-    var target = new Target($"{_appFixture.Url}/Users")
+    var target = new Target($"{_fixture.Url}/Users")
       .WithMethod(HttpMethod.Post)
       .WithBody(content);
 
@@ -48,7 +50,7 @@ public class AppTests : IClassFixture<AppFixture>, IAsyncLifetime
   [Fact]
   public async Task Get_Users_ShouldNotHaveSqli()
   {
-    var target = new Target($"{_appFixture.Url}/Users")
+    var target = new Target($"{_fixture.Url}/Users")
       .WithMethod(HttpMethod.Get)
       .WithQuery(new Dictionary<string, string> { { "name", "Test" } });
 
@@ -66,3 +68,4 @@ public class AppTests : IClassFixture<AppFixture>, IAsyncLifetime
       .Run(target);
   }
 }
+
