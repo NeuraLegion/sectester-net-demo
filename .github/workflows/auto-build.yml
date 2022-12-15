@@ -38,6 +38,6 @@ jobs:
         run: dotnet format --no-restore
 
       - name: dotnet test
-        run: dotnet test -c Release --no-build --nologo
+        run: dotnet test -c Release --no-build --nologo --filter "FullyQualifiedName\!~SecurityTests"
 
 
