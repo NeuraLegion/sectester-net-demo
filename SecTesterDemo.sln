@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "src\App\App.csproj",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.FunctionalTests", "test\App.FunctionalTests\App.FunctionalTests.csproj", "{FB974FB5-0DB0-41E3-A8BA-052FBDB19C50}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.SecurityTests", "test\App.SecurityTests\App.SecurityTests.csproj", "{A076BF90-0BC0-45E1-A17C-0512E3CB4FDF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,9 +36,14 @@ Global
 		{FB974FB5-0DB0-41E3-A8BA-052FBDB19C50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB974FB5-0DB0-41E3-A8BA-052FBDB19C50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB974FB5-0DB0-41E3-A8BA-052FBDB19C50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A076BF90-0BC0-45E1-A17C-0512E3CB4FDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A076BF90-0BC0-45E1-A17C-0512E3CB4FDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A076BF90-0BC0-45E1-A17C-0512E3CB4FDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A076BF90-0BC0-45E1-A17C-0512E3CB4FDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
   GlobalSection(NestedProjects) = preSolution
     {16F8C5D1-7558-4935-9AF5-3415E16AEBC2} = {F979DD52-A989-4D70-9551-D63145CE2205}
     {FB974FB5-0DB0-41E3-A8BA-052FBDB19C50} = {6D773315-EFAB-4D48-93DC-B73BCB0D3321}
+    {A076BF90-0BC0-45E1-A17C-0512E3CB4FDF} = {6D773315-EFAB-4D48-93DC-B73BCB0D3321}
   EndGlobalSection
 EndGlobal

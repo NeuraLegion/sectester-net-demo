@@ -1,26 +1,21 @@
 namespace App.FunctionalTests;
 
-public class AppFixture : IDisposable
+public class AppFixture : WebApplicationFactory<Program>
 {
-  private readonly WebApplicationFactory<Program> _app;
+  public HttpClient Client => CreateClient();
 
-  public AppFixture()
+  protected override void ConfigureWebHost(IWebHostBuilder builder) =>
+    builder.ConfigureAppConfiguration(cb => cb.AddJsonFile("appsettings.json", true)
+        .AddEnvironmentVariables())
+      .ConfigureLogging(loggingBuilder => loggingBuilder.ClearProviders())
+      .UseSolutionRelativeContentRoot("");
+
+  protected override IHost CreateHost(IHostBuilder builder)
   {
-    var app = new WebApplicationFactory<Program>()
-      .WithWebHostBuilder(ConfigureBuilder);
-
-    app.Services
-      .MigrateDbContext<UserContext>((context, services) => RunSeeds(services, context));
-
-    _app = app;
-  }
-
-  public HttpClient Client => _app.CreateClient();
-
-  public void Dispose()
-  {
-    _app.Dispose();
-    GC.SuppressFinalize(this);
+    var host = builder.Build();
+    host.Services.MigrateDbContext<UserContext>((context, services) => RunSeeds(services, context));
+    host.Start();
+    return host;
   }
 
   private static void RunSeeds(IServiceProvider services, UserContext context)
@@ -32,13 +27,4 @@ public class AppFixture : IDisposable
       .SeedAsync(context, env, logger)
       .Wait();
   }
-
-  private static void ConfigureBuilder(IWebHostBuilder builder) =>
-    builder.ConfigureAppConfiguration(cb =>
-      {
-        cb.AddJsonFile("appsettings.json", true)
-          .AddEnvironmentVariables();
-      })
-      .ConfigureLogging(logging => logging.ClearProviders())
-      .UseSolutionRelativeContentRoot("");
 }

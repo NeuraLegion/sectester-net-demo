@@ -7,26 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNetEnv" Version="2.3.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.12" />
+    <PackageReference Include="DotNetEnv" Version="2.3.0"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.12"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.12">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.7" />
-    <PackageReference Include="Polly" Version="7.2.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.7"/>
+    <PackageReference Include="Polly" Version="7.2.3"/>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3"/>
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="..\..\.dockerignore">
       <Link>.dockerignore</Link>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-      <_Parameter1>$(MSBuildProjectName).FunctionalTests</_Parameter1>
-    </AssemblyAttribute>
   </ItemGroup>
 </Project>
