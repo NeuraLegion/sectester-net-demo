@@ -1,8 +1,9 @@
 using App.Infrastructure;
 using App.Models;
+using DotNetEnv;
 using Microsoft.OpenApi.Models;
 
-DotNetEnv.Env.NoClobber().TraversePath().Load();
+Env.NoClobber().TraversePath().Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
