@@ -12,8 +12,7 @@ public static class ServiceProviderExtensions
     var services = scope.ServiceProvider;
 
     var logger = services.GetRequiredService<ILogger<TContext>>();
-
-    var context = services.GetService<TContext>();
+    var context = services.GetRequiredService<TContext>();
 
     try
     {
@@ -27,7 +26,7 @@ public static class ServiceProviderExtensions
           TimeSpan.FromSeconds(8)
         });
 
-      retry.Execute(() => InvokeSeeder(seeder!, context, services));
+      retry.Execute(() => InvokeSeeder(seeder, context, services));
 
       logger.LogInformation("Migrated database associated with context {DbContextName}", typeof(TContext).Name);
     }

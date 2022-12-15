@@ -3,17 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace App.Infrastructure;
 
-public class UserContext : DbContext
+public class UserContext : DbContext, IUserContext
 {
   public UserContext(DbContextOptions<UserContext> options) : base(options)
   {
   }
 
-  public DbSet<User> Users { get; set; }
-
-  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
-    optionsBuilder.UseNpgsql(
-      $"Host=localhost;Username={Environment.GetEnvironmentVariable("POSTGRES_USER")};Password={Environment.GetEnvironmentVariable("POSTGRES_PASSWORD")};Database=test");
+  public virtual DbSet<User> Users { get; set; }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

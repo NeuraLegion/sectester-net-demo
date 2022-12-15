@@ -22,7 +22,7 @@ public class UserContextSeed
     }).ConfigureAwait(false);
   }
 
-  private IEnumerable<User> GetPreconfiguredItems() =>
+  private static IEnumerable<User> GetPreconfiguredItems() =>
     new List<User>
     {
       new() { Name = "Van Owen" },
@@ -31,11 +31,11 @@ public class UserContextSeed
       new() { Name = "Melissa Jordan" }
     };
 
-  private AsyncRetryPolicy CreatePolicy(ILogger<UserContextSeed> logger, string prefix, int retries = 3) =>
+  private static AsyncRetryPolicy CreatePolicy(ILogger logger, string prefix, int retries = 3) =>
     Policy.Handle<Exception>().WaitAndRetryAsync(
       retries,
       _ => TimeSpan.FromSeconds(5),
       (exception, _, retry, _) => logger.LogWarning(exception,
-        "[{prefix}] Exception {ExceptionType} with message {Message} detected on attempt {retry} of {retries}", prefix,
+        "[{Prefix}] Exception {ExceptionType} with message {Message} detected on attempt {Retry} of {Retries}", prefix,
         exception.GetType().Name, exception.Message, retry, retries));
 }

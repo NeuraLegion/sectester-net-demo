@@ -1,9 +1,11 @@
-namespace App.UnitTests.Controllers;
+namespace App.UnitTests;
 
 public class UsersControllerTests : IDisposable
 {
   private const string UserName = "username";
   private const int UserId = 1;
+
+  private readonly UsersController _sut;
 
   private readonly User _user = new()
   {
@@ -12,9 +14,7 @@ public class UsersControllerTests : IDisposable
     IsActive = true
   };
 
-  private readonly Users _users = Substitute.For<Users>(null as UserContext);
-
-  private readonly UsersController _sut;
+  private readonly IUsers _users = Substitute.For<IUsers>();
 
   public UsersControllerTests()
   {
@@ -32,7 +32,7 @@ public class UsersControllerTests : IDisposable
   public async Task Create_ReturnsUser()
   {
     // arrange
-    var input = new CreateUserDto() { Name = UserName };
+    var input = new CreateUserDto { Name = UserName };
 
     _users.Create(input).Returns(_user);
 
@@ -48,7 +48,7 @@ public class UsersControllerTests : IDisposable
   }
 
   [Fact]
-  public async Task FindByName_ReturnsUser()
+  public async Task FindByName_ReturnsUsers()
   {
     // arrange
     _users.FindByName(UserName).Returns(new List<User> { _user });
