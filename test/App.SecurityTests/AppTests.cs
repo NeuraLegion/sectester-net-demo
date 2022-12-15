@@ -68,4 +68,3 @@ public class AppTests : IClassFixture<AppFixture>, IAsyncLifetime
       .Run(target);
   }
 }
-

@@ -5,7 +5,7 @@
     <Authors>artem.derevnjuk@brightsec.com</Authors>
     <Company>Bright Security</Company>
     <Product>SecTester</Product>
-    <Description>This is a demo project for the SecTester JS SDK framework, with some installation and usage examples.</Description>
+    <Description>This is a demo project for the SecTester NET SDK framework, with some installation and usage examples.</Description>
 
     <PackageTags>security;testing;e2e;test,.net;appsec;pentesting;qa;brightsec;scan;dast;demo</PackageTags>
     <RepositoryType>git</RepositoryType>
