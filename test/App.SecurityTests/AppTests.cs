@@ -7,15 +7,18 @@ public class AppTests : IClassFixture<AppFixture>, IAsyncLifetime
   private static readonly string Token = Environment.GetEnvironmentVariable("BRIGHT_TOKEN")!;
   private readonly Configuration _config = new(Hostname, new Credentials(Token));
   private readonly AppFixture _fixture;
-  private readonly SecRunner _runner;
+  private SecRunner _runner;
 
   public AppTests(AppFixture fixture)
   {
     _fixture = fixture;
-    _runner = SecRunner.Create(_config);
   }
 
-  public async Task InitializeAsync() => await _runner.Init();
+  public async Task InitializeAsync()
+  {
+    _runner = await SecRunner.Create(_config);
+    await _runner.Init();
+  }
 
   public async Task DisposeAsync()
   {
