@@ -93,7 +93,7 @@ public class AppFixture : WebApplicationFactory<Program>
     var logger = services.GetRequiredService<ILogger<UserContextSeed>>();
 
     new UserContextSeed()
-      .SeedAsync(context, env, logger)
+      .SeedAsync(context, logger)
       .Wait();
   }
 

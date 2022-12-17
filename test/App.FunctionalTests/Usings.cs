@@ -1,4 +1,9 @@
+global using System.Net;
+global using System.Net.Http.Json;
+global using System.Text.Json;
 global using App.Infrastructure;
+global using App.Models;
+global using FluentAssertions;
 global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.AspNetCore.Mvc.Testing;
 global using Microsoft.AspNetCore.TestHost;
@@ -6,3 +11,4 @@ global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Logging;
+global using Xunit;

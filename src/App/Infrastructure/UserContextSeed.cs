@@ -6,8 +6,7 @@ namespace App.Infrastructure;
 
 public class UserContextSeed
 {
-  public async Task SeedAsync(UserContext context, IWebHostEnvironment env,
-    ILogger<UserContextSeed> logger)
+  public async Task SeedAsync(UserContext context, ILogger<UserContextSeed> logger)
   {
     var policy = CreatePolicy(logger, nameof(UserContextSeed));
 

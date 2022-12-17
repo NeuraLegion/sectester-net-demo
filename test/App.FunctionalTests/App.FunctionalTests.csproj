@@ -4,11 +4,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.12"/>
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.12"/>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.12" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\App\App.csproj"/>
+    <ProjectReference Include="..\..\src\App\App.csproj" />
   </ItemGroup>
 </Project>
