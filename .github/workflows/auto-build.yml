@@ -34,10 +34,17 @@ jobs:
       - name: Build
         run: dotnet build -c Release --no-restore --nologo /p:CopyLocalLockFileAssemblies=true
 
-      - name: dotnet format
+      - name: Format
         run: dotnet format --no-restore
 
-      - name: dotnet test
-        run: dotnet test -c Release --no-build --nologo --filter "FullyQualifiedName\!~SecurityTests"
+      - name: Up deps
+        run: docker compose up -d
 
+      - name: Test
+        run: dotnet test -c Release --no-build --nologo --filter FullyQualifiedName\!~SecurityTests
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
 
+      - name: Down deps
+        run: docker compose down

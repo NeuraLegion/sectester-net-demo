@@ -10,6 +10,7 @@ public class AppFixture : WebApplicationFactory<Program>
       .ConfigureLogging(loggingBuilder => loggingBuilder.ClearProviders())
       .UseSolutionRelativeContentRoot("");
 
+
   protected override IHost CreateHost(IHostBuilder builder)
   {
     var host = builder.Build();
@@ -20,11 +21,10 @@ public class AppFixture : WebApplicationFactory<Program>
 
   private static void RunSeeds(IServiceProvider services, UserContext context)
   {
-    var env = services.GetRequiredService<IWebHostEnvironment>();
     var logger = services.GetRequiredService<ILogger<UserContextSeed>>();
 
     new UserContextSeed()
-      .SeedAsync(context, env, logger)
+      .SeedAsync(context, logger)
       .Wait();
   }
 }

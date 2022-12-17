@@ -42,8 +42,11 @@ public class UsersControllerTests : IDisposable
     // assert
     result.Should().BeEquivalentTo(new
     {
-      Id = UserId,
-      Name = UserName
+      Value = new
+      {
+        Id = UserId,
+        Name = UserName
+      }
     });
   }
 
@@ -72,8 +75,11 @@ public class UsersControllerTests : IDisposable
     // assert
     result.Should().BeEquivalentTo(new
     {
-      Id = UserId,
-      Name = UserName
+      Value = new
+      {
+        Id = UserId,
+        Name = UserName
+      }
     });
   }
 
