@@ -2,10 +2,6 @@ namespace App.SecurityTests;
 
 public class AppTests : IClassFixture<AppFixture>, IAsyncLifetime
 {
-  private static readonly IEnumerable<KeyValuePair<string, string>> _ = Env.NoClobber().TraversePath().Load();
-  private static readonly string Hostname = Environment.GetEnvironmentVariable("BRIGHT_HOSTNAME")!;
-  private static readonly string Token = Environment.GetEnvironmentVariable("BRIGHT_TOKEN")!;
-  private readonly Configuration _config = new(Hostname, new Credentials(Token));
   private readonly AppFixture _fixture;
   private SecRunner _runner;
 
@@ -16,13 +12,18 @@ public class AppTests : IClassFixture<AppFixture>, IAsyncLifetime
 
   public async Task InitializeAsync()
   {
-    _runner = await SecRunner.Create(_config);
+    var hostname = Environment.GetEnvironmentVariable("BRIGHT_HOSTNAME")!;
+    var config = new Configuration(hostname);
+
+    _runner = await SecRunner.Create(config);
+
     await _runner.Init();
   }
 
   public async Task DisposeAsync()
   {
     await _runner.DisposeAsync();
+    await _fixture.DisposeAsync();
     GC.SuppressFinalize(this);
   }
 
