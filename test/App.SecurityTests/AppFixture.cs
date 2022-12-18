@@ -10,6 +10,7 @@ public class AppFixture : WebApplicationFactory<Program>
 
   public AppFixture()
   {
+    EnsureServer();
     _urlInitializer = new Lazy<Uri>(GetUrl);
   }
 
@@ -89,7 +90,6 @@ public class AppFixture : WebApplicationFactory<Program>
 
   private static void RunSeeds(IServiceProvider services, UserContext context)
   {
-    var env = services.GetRequiredService<IWebHostEnvironment>();
     var logger = services.GetRequiredService<ILogger<UserContextSeed>>();
 
     new UserContextSeed()

@@ -115,7 +115,7 @@ To explore the Swagger UI:
 Then you can start tests with SecTester against these endpoints as follows (make sure you use a new terminal window, as the original is still running the API for us!)
 
 ```bash
-$ dotnet test -c Debug --nologo --filter "FullyQualifiedName~SecurityTests"
+$ dotnet test -c Debug --nologo --filter FullyQualifiedName~SecurityTests
 ```
 
 > You will find tests written with SecTester in the `./test/sec` folder.
@@ -248,6 +248,7 @@ public class AppTests : IClassFixture<AppFixture>, IAsyncLifetime
   public async Task DisposeAsync()
   {
     await _runner.DisposeAsync();
+    await _fixture.DisposeAsync();
     GC.SuppressFinalize(this);
   }
 }
@@ -390,7 +391,7 @@ public class UsersController : ControllerBase
   // ...
 
   [HttpGet]
-  [ProducesResponseType(typeof(IEnumerable<User>), (int)HttpStatusCode.OK)]
+  [ProducesResponseType(typeof(List<User>), StatusCodes.Status200OK)]
   public Task<List<User>> FindByName([FromQuery] string name) => _users.FindByName(name);
 }
 ```
@@ -552,7 +553,7 @@ You can integrate this library into any CI you use, for that you will need to ad
 ```yaml
 steps:
   - name: Run sec tests
-    run: dotnet test -c Release --no-build --nologo --filter "FullyQualifiedName~SecurityTests"
+    run: dotnet test -c Release --no-build --nologo --filter FullyQualifiedName~SecurityTests
     env:
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
