@@ -1,30 +1,65 @@
 namespace App.FunctionalTests;
 
-public class AppFixture : WebApplicationFactory<Program>
+public class AppFixture: IAsyncLifetime
 {
-  public HttpClient Client => CreateClient();
+  private readonly WebApplicationFactory<Program> _webApplicationFactory;
 
-  protected override void ConfigureWebHost(IWebHostBuilder builder) =>
-    builder.ConfigureAppConfiguration(cb => cb.AddJsonFile("appsettings.json", true)
-        .AddEnvironmentVariables())
-      .ConfigureLogging(loggingBuilder => loggingBuilder.ClearProviders())
-      .UseSolutionRelativeContentRoot("");
+  private readonly TestcontainerDatabase _postgresqlContainer =
+    new TestcontainersBuilder<PostgreSqlTestcontainer>()
+      .WithImage("postgres:14-alpine")
+      .WithDatabase(new PostgreSqlTestcontainerConfiguration
+      {
+        Database = $"db_{Guid.NewGuid()}",
+        Username = "postgres",
+        Password = "postgres",
+      })
+      .Build();
 
+  public HttpClient Client => _webApplicationFactory.CreateClient();
 
-  protected override IHost CreateHost(IHostBuilder builder)
+  public AppFixture()
   {
-    var host = builder.Build();
-    host.Services.MigrateDbContext<UserContext>((context, services) => RunSeeds(services, context));
-    host.Start();
-    return host;
+    _webApplicationFactory = new WebApplicationFactory<Program>()
+      .WithWebHostBuilder(builder => builder.UseSolutionRelativeContentRoot("")
+          .ConfigureAppConfiguration(cb => cb.AddJsonFile("appsettings.json", true).AddEnvironmentVariables())
+          .ConfigureLogging(loggingBuilder => loggingBuilder.ClearProviders())
+          .ConfigureTestServices(services =>
+          {
+            var descriptor = services.SingleOrDefault(
+              d => d.ServiceType ==
+                   typeof(DbContextOptions<UserContext>));
+
+            if (descriptor is not null)
+            {
+              services.Remove(descriptor);
+            }
+
+            services.AddDbContext<IUserContext, UserContext>(options => options.UseNpgsql(
+              _postgresqlContainer.ConnectionString)
+            );
+          })
+      );
+  }
+
+  public async Task InitializeAsync()
+  {
+    await _postgresqlContainer.StartAsync();
+    _webApplicationFactory.Services.MigrateDbContext<UserContext>((context, services) => RunSeeds(services, context));
+  }
+
+  public async Task DisposeAsync()
+  {
+    await _webApplicationFactory.DisposeAsync();
+    await _postgresqlContainer.DisposeAsync();
   }
 
   private static void RunSeeds(IServiceProvider services, UserContext context)
   {
+    var env = services.GetRequiredService<IWebHostEnvironment>();
     var logger = services.GetRequiredService<ILogger<UserContextSeed>>();
 
     new UserContextSeed()
-      .SeedAsync(context, logger)
+      .SeedAsync(context, env, logger)
       .Wait();
   }
 }
