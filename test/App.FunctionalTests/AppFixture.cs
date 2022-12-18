@@ -1,6 +1,6 @@
 namespace App.FunctionalTests;
 
-public class AppFixture: IAsyncLifetime
+public class AppFixture : IAsyncLifetime
 {
   private readonly WebApplicationFactory<Program> _webApplicationFactory;
 
@@ -59,7 +59,7 @@ public class AppFixture: IAsyncLifetime
     var logger = services.GetRequiredService<ILogger<UserContextSeed>>();
 
     new UserContextSeed()
-      .SeedAsync(context, env, logger)
+      .SeedAsync(context, logger)
       .Wait();
   }
 }
