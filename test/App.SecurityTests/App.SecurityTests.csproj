@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.12"/>
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.12"/>
-    <PackageReference Include="SecTester.Runner" Version="0.33.6"/>
+    <PackageReference Include="SecTester.Runner" Version="0.33.7"/>
   </ItemGroup>
 
   <ItemGroup>

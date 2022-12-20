@@ -52,14 +52,14 @@
       },
       "SecTester.Runner": {
         "type": "Direct",
-        "requested": "[0.33.6, )",
-        "resolved": "0.33.6",
-        "contentHash": "HKPfl4p8Uy0SIWxX97hSXw+YnWIJQxoqA4/te7IcYKcPRsg5/uhYXhiPu6VkXd+PighdgurWyei1lmDe8P7Ekg==",
+        "requested": "[0.33.7, )",
+        "resolved": "0.33.7",
+        "contentHash": "g0LOeAuqRzRh4YNJRGUamqPFcHvZZ/hG7LtTEIVVAkuWVOBdWRHy7NhtYeVZilFtSXqvhqGgoZdQdZE5jYBCzw==",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
-          "SecTester.Repeater": "0.33.6",
-          "SecTester.Reporter": "0.33.6",
-          "SecTester.Scan": "0.33.6"
+          "SecTester.Repeater": "0.33.7",
+          "SecTester.Reporter": "0.33.7",
+          "SecTester.Scan": "0.33.7"
         }
       },
       "xunit": {
@@ -748,23 +748,23 @@
       },
       "SecTester.Bus": {
         "type": "Transitive",
-        "resolved": "0.33.6",
-        "contentHash": "Q6lfX+migN+w/25nPBVbXwQZD2ViP7AkYZgM0ZMGzIFheE5uH6L3bWScDj+uGWCF9HkaQF9MrlyIzpa42aIG1A==",
+        "resolved": "0.33.7",
+        "contentHash": "Qf/PhiXmbN7OrniJfb/N1yxWLsgfYy4MPIDodClrDAFTWL95GIEskbiTEKKHOV5DLXPG2eHft04APjug7QXxDw==",
         "dependencies": {
           "Macross.Json.Extensions": "3.0.0",
           "Microsoft.Bcl.AsyncInterfaces": "7.0.0",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
           "Microsoft.Extensions.Http": "6.0.0",
           "RabbitMQ.Client": "6.4.0",
-          "SecTester.Core": "0.33.6",
+          "SecTester.Core": "0.33.7",
           "System.Text.Json": "6.0.0",
           "System.Threading.RateLimiting": "7.0.0"
         }
       },
       "SecTester.Core": {
         "type": "Transitive",
-        "resolved": "0.33.6",
-        "contentHash": "SXjF0iSrpp8+I3Y2a9cTapFP5rjKiMBuS+zlJ9IXKByj+UwJerWQezxXfdbxbOyt9kZw3TQVuN4qJT/2kaEGiQ==",
+        "resolved": "0.33.7",
+        "contentHash": "hVZotCrJU9pDwf2JUMx1WnXyyluTHbzfh7iw5+f9U38TBGN5nzr6LYmH5mIVr1WgLCX6aGn4wTgkVtAf0XVzRg==",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
           "Microsoft.Extensions.Logging": "6.0.0",
@@ -773,33 +773,33 @@
       },
       "SecTester.Repeater": {
         "type": "Transitive",
-        "resolved": "0.33.6",
-        "contentHash": "5foumLlAzAeNfHFjO46RZrN9IfepGNe+E9yGVtX6FsgE8c159NLkNaW4ISYxEAqVpvxUgQEu6+/TO3WlLCD6Ig==",
+        "resolved": "0.33.7",
+        "contentHash": "dVO7uQa7OI3MWLAYJPhELn5z+M30Pwqn4izhmhmyZ/5D1ES9j3nZ+4mpIXWT5wE1w+0ht8XQgM0Q+kpSKerjAg==",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
-          "SecTester.Bus": "0.33.6",
-          "SecTester.Core": "0.33.6",
+          "SecTester.Bus": "0.33.7",
+          "SecTester.Core": "0.33.7",
           "System.Linq.Async": "6.0.1"
         }
       },
       "SecTester.Reporter": {
         "type": "Transitive",
-        "resolved": "0.33.6",
-        "contentHash": "lHiAFl8w2Qs4T0hK8T3IJC5rcL4FtYxgiX6+KMw3zJQa3/DoQKGQdcIUN7lRCyY7tmY10IhFCm7yoYX3EgIeYw==",
+        "resolved": "0.33.7",
+        "contentHash": "h+CpIbxVLgKboiP9WJYVZiSewdsKDdYZC4V9DnfJTBdWFQ22Hgy+ayep3IREq/NLCJrOyfeH9tLTbSgmJfKQ+Q==",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
-          "SecTester.Scan": "0.33.6"
+          "SecTester.Scan": "0.33.7"
         }
       },
       "SecTester.Scan": {
         "type": "Transitive",
-        "resolved": "0.33.6",
-        "contentHash": "efyz4ZLAxx0pE/xXuH6pbIrGOEdiIQ9DpbFP+fXqRCgDIiHuXl/pJ7UH71RVDRoa+/PqO0CR5dB30qIWkuO1cw==",
+        "resolved": "0.33.7",
+        "contentHash": "jgysV5onrpGcTHyCPxlOM/4Mj86VosKmPe9RPfAm/8U40gS/MvmjPns1uxOBQYI0Sg+6nqsnsWot8O7CpcA0ZQ==",
         "dependencies": {
           "Macross.Json.Extensions": "3.0.0",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
-          "SecTester.Bus": "0.33.6",
-          "SecTester.Core": "0.33.6",
+          "SecTester.Bus": "0.33.7",
+          "SecTester.Core": "0.33.7",
           "System.Linq.Async": "6.0.1",
           "System.Text.Json": "6.0.0"
         }
