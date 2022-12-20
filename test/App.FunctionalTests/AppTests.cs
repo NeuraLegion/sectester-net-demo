@@ -1,6 +1,6 @@
 namespace App.FunctionalTests;
 
-public class AppTests : IClassFixture<AppFixture>, IAsyncDisposable
+public class AppTests : IClassFixture<AppFixture>
 {
   private readonly JsonSerializerOptions _serializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
   private readonly AppFixture _fixture;
@@ -8,12 +8,6 @@ public class AppTests : IClassFixture<AppFixture>, IAsyncDisposable
   public AppTests(AppFixture fixture)
   {
     _fixture = fixture;
-  }
-
-  public async ValueTask DisposeAsync()
-  {
-    await _fixture.DisposeAsync();
-    GC.SuppressFinalize(this);
   }
 
   [Fact]

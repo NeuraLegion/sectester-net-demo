@@ -248,7 +248,6 @@ public class AppTests : IClassFixture<AppFixture>, IAsyncLifetime
   public async Task DisposeAsync()
   {
     await _runner.DisposeAsync();
-    await _fixture.DisposeAsync();
     GC.SuppressFinalize(this);
   }
 }
