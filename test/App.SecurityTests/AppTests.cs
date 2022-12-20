@@ -12,6 +12,9 @@ public class AppTests : IClassFixture<AppFixture>, IAsyncLifetime
 
   public async Task InitializeAsync()
   {
+    // Loading environment variables from .env file using https://github.com/tonerdo/dotnet-env
+    Env.NoClobber().TraversePath().Load();
+
     var hostname = Environment.GetEnvironmentVariable("BRIGHT_HOSTNAME")!;
     var config = new Configuration(hostname);
 

@@ -10,7 +10,6 @@ public class AppFixture : WebApplicationFactory<Program>
 
   public AppFixture()
   {
-    EnsureServer();
     _urlInitializer = new Lazy<Uri>(GetUrl);
   }
 
