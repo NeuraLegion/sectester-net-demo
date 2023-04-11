@@ -26,7 +26,7 @@
   "scripts": {
     "semantic-release": "semantic-release"
   },
-  "homepage": "https://github.com/NeuraLegion/sectester-js-demo#readme",
+  "homepage": "https://github.com/NeuraLegion/sectester-net-demo#readme",
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",
     "@commitlint/config-conventional": "^17.3.0",
